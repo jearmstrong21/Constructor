@@ -1,4 +1,9 @@
-final float versionNumber=2;
+//1-0-0 - add edges,points,fixed,remove points,save/open
+//2-0-0 - add muscles smoothCos and jerkyCos
+//2-0-1 - add more controls, info, ability to rem edges
+//2-0-2 - add ability to cycle through "isMuscle" and "muscleType" 
+final String versionNumber="2-0-2";
+final String versionNumberFormatted="2.0.2";
 
 PFont fontNormal;
 PFont fontBold;

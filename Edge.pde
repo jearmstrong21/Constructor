@@ -8,12 +8,18 @@ class Edge {
   float amp;
   float off;
   int muscleType;
+  PVector getCenter(){
+    return new PVector(0.5*a.pos.x+0.5*b.pos.x,0.5*a.pos.y+0.5*b.pos.y);
+  }
   Edge(Point p1, Point p2, float d) {
     p1.isInEdge=true;
     p2.isInEdge=true;
     a=p1;
     b=p2;
     isMuscle=false;
+    amp=-1;
+    period=-1;
+    off=0;
     //isMuscle=random(1)<0.25;
     //period=0.1;
     //amp=d;
@@ -62,11 +68,18 @@ class Edge {
     b.display();
     //stroke(0);
     if(isMuscle){
-      if(muscleType==muscleJerkyCos)stroke(colMuscleJerkyCos);
-      else if(muscleType==muscleSmoothCos)stroke(colMuscleSmoothCos);
+      if(muscleType==muscleJerkyCos){
+        stroke(colMuscleJerkyCos);
+        fill(colMuscleJerkyCos);
+      }else if(muscleType==muscleSmoothCos){
+        stroke(colMuscleSmoothCos);
+        fill(colMuscleSmoothCos);
+      }
     }else{
       stroke(colEdge);
     }
+    PVector center=getCenter();
+    ellipse(center.x,center.y,5,5);
     line(a.pos.x, a.pos.y, b.pos.x, b.pos.y);
   }
 }

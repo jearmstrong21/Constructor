@@ -19,6 +19,8 @@ int muscleSmoothCos=1;
 float bounce=1;
 float margin=50;
 float bounceForce=2;
+float pointSelectDist=20;
+float edgeSelectDist=20;
 
 color colMuscleJerkyCos=color(255,0,0);
 color colMuscleSmoothCos=color(50,200,50);
