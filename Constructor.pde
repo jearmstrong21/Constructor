@@ -7,7 +7,7 @@
 //2-0-2   add ability to cycle through "isMuscle" and "muscleType"
 //3-0-0   complete redesign
 //3-1-0   add ability to save/open to/from files
-final String versionNumber="3-0-0";
+final String versionNumber="3-0-1";
 final String versionNumberFormatted=versionNumber.replaceAll("-",".");
 String workspaceFile="~/Documents/Constructions/";
 String currentFile=workspaceFile+"Untitled.constr"+versionNumber;//Replace with your preferred directory
