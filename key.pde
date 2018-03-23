@@ -92,7 +92,13 @@ void keyPressed() {
         e.checkDistRange();
       }
     }
-  } else {
+  }else if(key=='o'){
+    varMode=null;
+    selectInput("Select a file to open: ","fileSelectedInput",new File(workspaceFile));
+  }else if(key=='s'){
+    varMode=null;
+    selectOutput("Select a file to write to: ","fileSelectedOutput",new File(currentFile));
+  }else{
     varMode=null;
   }
 }

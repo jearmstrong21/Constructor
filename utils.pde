@@ -48,6 +48,12 @@ void displayTitle(){
   textAlign(LEFT,TOP);
   text("constructor v"+versionNumberFormatted,2,2+textDiff*0);
 }
+void displayInfo(){
+  textAlign(LEFT,BOTTOM);
+  setCol(color(0));
+  textFont(fontNormal);
+  text("current file: "+currentFile,0,height);
+}
 void displayControls(){
   textAlign(LEFT,TOP);
   setCol(color(0));
@@ -61,9 +67,11 @@ void displayControls(){
   text("'f' - toggle fixed point",2,2+textDiff*8);
   text("'t' - select edge type variable",2,2+textDiff*9);
   text("'l' - select edge length variable",2,2+textDiff*10);
+  text("'o' - open from file",2,2+textDiff*11);
+  text("'s' - save to file",2,2+textDiff*12);
   
-  text("'+' - add to selected variable",2,2+textDiff*12);
-  text("'-' - subtract from selected variable",2,2+textDiff*13);
+  text("'+' - add to selected variable",2,2+textDiff*14);
+  text("'-' - subtract from selected variable",2,2+textDiff*15);
 }
 Edge intersectionEdge(){
   for(Edge e:edges){

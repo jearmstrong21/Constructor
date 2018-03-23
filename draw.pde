@@ -4,6 +4,7 @@ void draw(){
   displayTitle();
   displayFloor();
   displayStats();
+  displayInfo();
   if(isSimulating)for(Edge e:edges)e.update();
   for(Edge e:edges){
     e.display();
