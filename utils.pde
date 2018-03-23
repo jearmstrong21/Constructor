@@ -1,101 +1,80 @@
-
-Point randPoint() {
-  return points.get((int)random(points.size()));
+void setCol(color c){
+  fill(c);
+  stroke(c);
 }
-boolean isEdgeModeMuscle=false;
-Point intersection() {
-  for (Point p : points)if (PVector.dist(new PVector(mouseX, mouseY), p.pos)<pointSelectDist)return p;
-  return null;
+void displayFloor(){
+  setCol(color(0));
+  line(floorHeight,height-floorHeight,width-floorHeight,height-floorHeight);
 }
-void removeEdgesWithPoint(Point p) {
-  for (int i=0; i<edges.size(); i++) {
-    Edge e=edges.get(i);
-    if (e.a==p||e.b==p) {
-      edges.remove(i);
-      if (e.a!=p)e.a.isInEdge=false;
-      if (e.b!=p)e.b.isInEdge=false;
+void removeEdgesWithPoint(Point p){
+  for(int i=0;i<edges.size();i++){
+    Edge edge=edges.get(i);
+    if(edge.a==p||edge.b==p){
+      edges.remove(edge);
       removeEdgesWithPoint(p);
     }
   }
 }
-int numPointsInEdge(){
-  int i=0;
-  for(Point p:points)if(p.isInEdge)i++;
-  return i;
+void displayStats(){
+  setCol(color(0));
+  textFont(fontNormal);
+  textAlign(RIGHT,TOP);
+  text("is simulating: "+(isSimulating?"yes":"no"),width-2,2+textDiff*0);
+  text("gravity: "+gravity,width-2,2+textDiff*1);
+  text("selected variable: "+(varMode==null?"none":varMode==VarMode.EdgeK?"edge tension":varMode==VarMode.PointMass?"point mass":varMode==VarMode.EdgeType?"edge type":"edge length"),width-2,2+textDiff*2);
+  text("# edges: "+edges.size(),width-2,2+textDiff*3);
+  text("# points: "+points.size(),width-2,2+textDiff*4);
+  
+  String txt="selected variable value: none";
+  Edge e=intersectionEdge();
+  Point p=intersectionPoint();
+  if(varMode==VarMode.EdgeK&&e!=null){
+    txt="selected edge tension: "+nf(e.k,1,2);
+  }
+  if(varMode==VarMode.PointMass&&p!=null){
+    txt="selected point mass: "+nf(p.mass,3,2);
+  }
+  if(varMode==VarMode.EdgeType&&e!=null){
+    txt="selected edge type: "+e.stringType();
+  }
+  if(varMode==VarMode.EdgeLength&&e!=null){
+    txt="selected edge length: "+nf(e.origDist,4,0);
+  }
+  text(txt,width-2,2+textDiff*6);
 }
-Edge edgeIntersection(){
+void displayTitle(){
+  setCol(colTitle);
+  textFont(fontLarge);
+  textAlign(LEFT,TOP);
+  text("constructor v"+versionNumberFormatted,2,2+textDiff*0);
+}
+void displayControls(){
+  textAlign(LEFT,TOP);
+  setCol(color(0));
+  textFont(fontNormal);
+  text("' ' - pause/unpause simulation",2,2+textDiff*2);
+  text("'p' - make point",2,2+textDiff*3);
+  text("'e' - make edge",2,2+textDiff*4);
+  text("'d' - remove point/edge",2,2+textDiff*5);
+  text("'k' - select edge tension variable",2,2+textDiff*6);
+  text("'m' - select point mass variable",2,2+textDiff*7);
+  text("'f' - toggle fixed point",2,2+textDiff*8);
+  text("'t' - select edge type variable",2,2+textDiff*9);
+  text("'l' - select edge length variable",2,2+textDiff*10);
+  
+  text("'+' - add to selected variable",2,2+textDiff*12);
+  text("'-' - subtract from selected variable",2,2+textDiff*13);
+}
+Edge intersectionEdge(){
   for(Edge e:edges){
-    PVector p=e.getCenter();
-    if(PVector.dist(new PVector(mouseX,mouseY),p)<edgeSelectDist)return e;
+    PVector c=e.getCenter();
+    if(sqrt(sq(c.x-mouseX)+sq(c.y-mouseY))<EdgeSelectSize)return e;
   }
   return null;
 }
-void displayVars(){
-  fill(0);
-  stroke(0);
-  textFont(fontNormal);
-  textAlign(RIGHT,TOP);
-  float diff=15;
-  text("Tension for fixed point edges: "+fixedK,width-2,2+diff*0);
-  text("Tension for normal edges: "+unfixedK,width-2,2+diff*1);
-  text("Tension for smooth muscle edges: "+smoothCosK,width-2,2+diff*2);
-  text("Tension for jerky muscle edges: "+jerkyCosK,width-2,2+diff*3);
-  text("Gravity: "+gravity,width-2,2+diff*4);
-  
-  text("# of points: "+points.size(),width-2,2+diff*6);
-  text("# of edges: "+edges.size(),width-2,2+diff*7);
-  text("# of points in edges: "+numPointsInEdge(),width-2,2+diff*8);
-  text("# of points not in edges: "+(points.size()-numPointsInEdge()),width-2,2+diff*9);
-}
-String getMode(){
-  if(key==' ')return "pause/unpause simulation";
-  if(key=='s')return "save construction";
-  if(key=='o')return "open construction";
-  if(key=='d')return "delete point/edge";
-  if(key=='p')return "place point";
-  if(key=='f')return "toggle fixed point mode";
-  if(key=='e')return "make an edge";
-  if(key=='m')return "make jerky muscle edge";
-  if(key==',')return "make smooth muscle edge";
-  if(key=='c')return "toggle is muscle";
-  if(key=='v')return "cycle muscle type";
-  return "none";
-}
-void displayControls(){
-  textAlign(LEFT, TOP);
-  fill(0);
-  stroke(0);
-  textSize(10);
-  float diff=15;
-  fill(colTitle);
-  stroke(colTitle);
-  textFont(fontBold);
-  text("Constructor V"+versionNumberFormatted,2,2);
-  fill(0);
-  stroke(0);
-  textFont(fontNormal);
-  text("' ' - pause/unpause simulation",2,2+diff*1);
-  text("'s' - save construction",2,2+diff*2);
-  text("'o' - open construction",2,2+diff*3);
-  text("'d' - delete point/edge",2,2+diff*4);
-  text("'p' - place point",2,2+diff*5);
-  fill(colFixedPoint);
-  stroke(colFixedPoint);
-  text("'f' - toggle fixed point mode",2,2+diff*6);
-  fill(0);
-  stroke(0);
-  text("'e' - make an edge",2,2+diff*7);
-  fill(colMuscleJerkyCos);
-  stroke(colMuscleJerkyCos);
-  text("'m' - make jerky muscle edge",2,2+diff*8);
-  fill(colMuscleSmoothCos);
-  stroke(colMuscleSmoothCos);
-  text("',' - make smooth muscle edge",2,2+diff*9);
-  fill(0);
-  stroke(0);
-  text("'c' - toggle is muscle",2,2+diff*10);
-  text("'v' - cycle muscle type",2,2+diff*11);
-  text("'"+key+"' - "+getMode(),2,2+diff*13);
-  textAlign(LEFT,BOTTOM);
-  text("Currently opened file: "+curOpened,0,height);
+Point intersectionPoint(){
+  for(Point p:points){
+    if(sqrt(sq(p.posx-mouseX)+sq(p.posy-mouseY))<PointSelectSize)return p;
+  }
+  return null;
 }

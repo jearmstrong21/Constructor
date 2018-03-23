@@ -1,34 +1,55 @@
-class Point {
-  PVector pos, vel, acc;
-  boolean fixed=false;
-  boolean isInEdge=false;
-  Point(float x, float y) {
-    pos=new PVector(x, y);
-    vel=new PVector(0, 0);
-    acc=new PVector(0, 0);
+class Point{
+  float posx,posy,velx,vely,accx,accy;
+  float mass;
+  boolean fixed;
+  
+  Point(float x,float y){
+    mass=PointMassDef;
+    //mass=random(PointMassMi,PointMassMa);
+    fixed=false;
+    posx=x;
+    posy=y;
+    velx=0;
+    vely=0;
+    accx=0;
+    accy=0;
   }
-  void display() {
-    if (fixed) {
-      stroke(colFixedPoint);
-      fill(colFixedPoint);
-    } else {
-      stroke(200);
-      fill(200);
-    }
-    ellipse(pos.x, pos.y, 10, 10);
+  
+  //boolean isInEdge=false;
+  void display(){
+    float gray=map(mass,PointMassMi,PointMassMa,0,200);
+    fill(gray);
+    stroke(gray);
+    float size=map(mass,PointMassMi,PointMassMa,PointSizeMi,PointSizeMa);
+    if(fixed)setCol(color(200,100,100));
+    ellipse(posx,posy,size,size);
   }
-  void update() {
-    if (pos.y<height-margin) {
-      //GRAVITY
-      acc.y=gravity;
-    } else {
-      acc.y=0;
+  void constrainMass(){
+    if(mass<PointMassMi)mass=PointMassMi;
+    if(mass>PointMassMa)mass=PointMassMa;
+  }
+  void update(){
+    //TODO: apply gravity
+    if(posy<height-floorHeight){
+      //accy+=gravity;
     }
-    if (pos.y>height-margin) {
-      vel.y=-abs(min(bounceForce, vel.y));
-      pos.y=height-margin;
+    posx+=velx;
+    posy+=vely;
+    velx+=accx;
+    vely+=accy;
+    if(posy>height-floorHeight){
+      //accy-=gravity;
+      //posy=height-floorHeight;
+      //float sgn=abs(vely)/vely;
+      //vely/=1.5;
+      //vely*=-0.9;
+      //if(abs(vely)<10)vely=0;
+      //vely
+      //vely=abs(vely);
+      //vely-=gravity*20;
+      //vely*=sgn;
+      //vely*=-1;
+      //vely=-abs(vely);
     }
-    vel=vel.add(acc);
-    pos=pos.add(vel);
   }
 }

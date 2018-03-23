@@ -1,46 +1,98 @@
 void keyPressed() {
-  if (key==' ')isSim=!isSim;
-  else if (key=='s') {
-    isSim=false;
-    selectOutput("Save construction", "saveFileSelected", new File("~/Documents/MyConstructor/Untitled.constr"+versionNumber));
-  } else if (key=='o') {
-    isSim=false;
-    selectInput("Open construction", "openFileSelected", new File("~/Documents/MyConstructor/"));
+  if (key==' ') {
+    isSimulating=!isSimulating;
+    //for(Edge e:edges)e.update();
+    varMode=null;
+  } else if (key=='p') {
+    Point p=new Point(mouseX, mouseY);
+    points.add(p);
+    varMode=null;
   } else if (key=='d') {
-    Point i=intersection();
-    if (i!=null){
-      removeEdgesWithPoint(i);
-      points.remove(i);
-    }else {
-      Edge e=edgeIntersection();
-      if(e!=null){
-        e.a.isInEdge=false;
-        e.b.isInEdge=false;
-        edges.remove(e);
+    Point ip=intersectionPoint();
+    if (ip!=null) {
+      removeEdgesWithPoint(ip);
+      points.remove(ip);
+    }
+    Edge ie=intersectionEdge();
+    if (ie!=null) {
+      edges.remove(ie);
+    }
+    varMode=null;
+  } else if (key=='f') {
+    Point p=intersectionPoint();
+    if (p!=null) {
+      p.fixed=!p.fixed;
+    }
+    varMode=null;
+  } else if (key=='k') {
+    varMode=VarMode.EdgeK;
+  } else if (key=='m') {
+    varMode=VarMode.PointMass;
+  } else if (key=='t') {
+    varMode=VarMode.EdgeType;
+  } else if (key=='l') {
+    varMode=VarMode.EdgeLength;
+  } else if (key=='+'||key=='=') {
+    if (varMode==VarMode.EdgeK) {
+      Edge e=intersectionEdge();
+      if (e!=null) {
+        e.k+=0.1;
+        e.constrainK();
       }
     }
-  }else if(key=='c'){
-    Edge e=edgeIntersection();
-    if(e!=null){
-      e.isMuscle=!e.isMuscle;
-      e.dist=100;
-      if(e.isMuscle){
-        if(e.amp==-1){
-          e.period=0.1;
-          e.amp=100;
-          e.off=0;
-          e.muscleType=muscleSmoothCos;
-        }
+    if (varMode==VarMode.PointMass) {
+      Point p=intersectionPoint();
+      if (p!=null) {
+        p.mass+=5;
+        p.constrainMass();
       }
     }
-  }else if(key=='v'){
-    Edge e=edgeIntersection();
-    if(e!=null){
-      if(e.isMuscle){
-        if(e.muscleType==muscleJerkyCos)e.muscleType=muscleSmoothCos;
-        else if(e.muscleType==muscleSmoothCos)e.muscleType=muscleJerkyCos;
-        e.dist=100;
+    if (varMode==VarMode.EdgeType) {
+      Edge e=intersectionEdge();
+      if (e!=null) {
+        if (e.type==EdgeType.Normal)e.type=EdgeType.MuscleJerky;
+        else if (e.type==EdgeType.MuscleJerky)e.type=EdgeType.MuscleSmooth;
+        else if (e.type==EdgeType.MuscleSmooth)e.type=EdgeType.Normal;
       }
     }
+    if (varMode==VarMode.EdgeLength) {
+      Edge e=intersectionEdge();
+      if (e!=null) {
+        e.origDist+=10;
+        e.checkDistRange();
+      }
+    }
+  } else if (key=='-'||key=='_') {
+    if (varMode==VarMode.EdgeK) {
+      Edge e=intersectionEdge();
+      if (e!=null) {
+        e.k-=0.1;
+        e.constrainK();
+      }
+    }
+    if (varMode==VarMode.PointMass) {
+      Point p=intersectionPoint();
+      if (p!=null) {
+        p.mass-=5;
+        p.constrainMass();
+      }
+    }
+    if (varMode==VarMode.EdgeType) {
+      Edge e=intersectionEdge();
+      if (e!=null) {
+        if (e.type==EdgeType.Normal)e.type=EdgeType.MuscleJerky;
+        else if (e.type==EdgeType.MuscleJerky)e.type=EdgeType.MuscleSmooth;
+        else if (e.type==EdgeType.MuscleSmooth)e.type=EdgeType.Normal;
+      }
+    }
+    if (varMode==VarMode.EdgeLength) {
+      Edge e=intersectionEdge();
+      if (e!=null) {
+        e.origDist-=10;
+        e.checkDistRange();
+      }
+    }
+  } else {
+    varMode=null;
   }
 }
