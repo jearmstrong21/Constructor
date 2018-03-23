@@ -1,3 +1,27 @@
+JSONObject pointToJSON(Point p){
+  JSONObject obj=new JSONObject();
+  obj.setFloat("posx",p.posx);
+  obj.setFloat("posy",p.posy);
+  obj.setFloat("velx",p.velx);
+  obj.setFloat("vely",p.vely);
+  obj.setFloat("accx",p.accx);
+  obj.setFloat("accy",p.accy);
+  obj.setFloat("mass",p.mass);
+  obj.setBoolean("fixed",p.fixed);
+  return obj;
+}
+Point pointFromJSON(JSONObject obj){
+  Point p=new Point(obj.getFloat("posx"),obj.getFloat("posy"));
+  //vel,acc,mass,is fixed
+  p.velx=obj.getFloat("velx");
+  p.vely=obj.getFloat("vely");
+  p.accx=obj.getFloat("accx");
+  p.accy=obj.getFloat("accy");
+  p.mass=obj.getFloat("mass");
+  p.fixed=obj.getBoolean("fixed");
+  return p;
+}
+
 class Point{
   float posx,posy,velx,vely,accx,accy;
   float mass;

@@ -1,22 +1,26 @@
 //TODO: have all features implemented BEFORE json is implemented
-//JSONObject edgeToJSON(Edge e){
-//  JSONObject obj=new JSONObject();
-//  obj.setInt("a",points.indexOf(e.a));
-//  obj.setInt("b",points.indexOf(e.b));
-//  obj.setFloat("dist",e.dist);
-//  obj.setFloat("origDist",e.origDist);
-//  obj.setInt("type",e.type.ordinal());
-//  obj.setFloat("period",e.period);
-//  obj.setFloat("k",e.k);
-//  return obj;
-//}
-//Edge edgeFromJSON(JSONObject obj){
-//  Edge e=new Edge(null,null,null,-1);
-//  e.a=points.get(obj.getInt("a"));
-//  e.b=points.get(obj.getInt("b"));
-  
-//  return e;
-//}
+JSONObject edgeToJSON(Edge e){
+  JSONObject obj=new JSONObject();
+  obj.setInt("a",points.indexOf(e.a));
+  obj.setInt("b",points.indexOf(e.b));
+  obj.setFloat("dist",e.dist);
+  obj.setFloat("origDist",e.origDist);
+  obj.setInt("type",e.type.ordinal());
+  obj.setFloat("period",e.period);
+  obj.setFloat("k",e.k);
+  return obj;
+}
+Edge edgeFromJSON(JSONObject obj){
+  Edge e=new Edge(null,null,null,-1);
+  e.a=points.get(obj.getInt("a"));
+  e.b=points.get(obj.getInt("b"));
+  e.dist=obj.getFloat("dist");
+  e.origDist=obj.getFloat("origDist");
+  e.type=EdgeType.values()[obj.getInt("type")];
+  e.period=obj.getFloat("period");
+  e.k=obj.getFloat("k");
+  return e;
+}
 
 class Edge{
   Point a;
