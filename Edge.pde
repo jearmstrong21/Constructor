@@ -74,6 +74,8 @@ class Edge{
   void update(){
     float ka=k/(a.mass/b.mass + 1);
     float kb=k-ka;
+    ka*=0.001;
+    kb*=0.001;
     float dx=a.posx-b.posx;
     float dy=a.posy-b.posy;
     float dmag=sqrt(sq(dx)+sq(dy));
@@ -84,13 +86,13 @@ class Edge{
     float d=(dmag-dist)/dist;
     if(!a.fixed){
       a.update();
-      a.posx-=dx*ka*d/2;
-      a.posy-=dy*ka*d/2;
+      a.accx-=dx*ka*d/2;
+      a.accy-=dy*ka*d/2;
     }
     if(!b.fixed){
       b.update();
-      b.posx+=dx*kb*d/2;
-      b.posy+=dy*kb*d/2;
+      b.accx+=dx*kb*d/2;
+      b.accy+=dy*kb*d/2;
     }
   }
 }

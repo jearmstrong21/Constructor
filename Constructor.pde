@@ -1,13 +1,11 @@
-//TODO for 3-0-0: have all features implemented BEFORE json is implemented
-
-
 //1-0-0   add edges,points,fixed,remove points,save/open
 //2-0-0   add muscles smoothCos and jerkyCos
 //2-0-1   add more controls, info, ability to rem edges
 //2-0-2   add ability to cycle through "isMuscle" and "muscleType"
 //3-0-0   complete redesign
 //3-1-0   add ability to save/open to/from files
-final String versionNumber="3-0-1";
+//3-2-0   edges constrain with velocity, not position
+final String versionNumber="3-0-2";
 final String versionNumberFormatted=versionNumber.replaceAll("-",".");
 String workspaceFile="~/Documents/Constructions/";
 String currentFile=workspaceFile+"Untitled.constr"+versionNumber;//Replace with your preferred directory

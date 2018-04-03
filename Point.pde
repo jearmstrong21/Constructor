@@ -61,6 +61,8 @@ class Point{
     posy+=vely;
     velx+=accx;
     vely+=accy;
+    accx*=0.5;
+    accy*=0.5;
     if(posy>height-floorHeight){
       //accy-=gravity;
       //posy=height-floorHeight;
