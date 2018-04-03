@@ -18,7 +18,7 @@ final static float EdgeHandleSize=10;
 
 final static float textDiff=15;
 final static float minEdgeK=0;
-final static float maxEdgeK=3;
+final static float maxEdgeK=10;
 
 final color colEdgeMuscleSmooth=color(100,200,100);
 final color colEdgeMuscleJerky=color(200,100,100);
@@ -29,9 +29,9 @@ final static float floorHeight=100;
 final static float minEdgeDist=50;
 final static float maxEdgeDist=1000;
 
-final static float defGravity=0.001;
+final static float defGravity=0.1;
 final static float defFixedK=2;
-final static float defUnFixedK=1;
+final static float defUnFixedK=10;
 final static float defMuscleK=1;
 
 final static float PointSizeMi=5;

@@ -85,14 +85,14 @@ class Edge{
     if(dmag<1)return;
     float d=(dmag-dist)/dist;
     if(!a.fixed){
-      a.update();
-      a.accx-=dx*ka*d/2;
-      a.accy-=dy*ka*d/2;
+      //a.update();
+      a.velx-=dx*ka*d/2;
+      a.vely-=dy*ka*d/2;
     }
     if(!b.fixed){
-      b.update();
-      b.accx+=dx*kb*d/2;
-      b.accy+=dy*kb*d/2;
+      //b.update();
+      b.velx+=dx*kb*d/2;
+      b.vely+=dy*kb*d/2;
     }
   }
 }

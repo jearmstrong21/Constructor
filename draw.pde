@@ -11,6 +11,9 @@ void draw(){
     //if(isSimulating)e.update();
   }
   for(Point p:points){
+    if(isSimulating)p.update();
+  }
+  for(Point p:points){
     p.display();
   }
   Point intersectionP=intersectionPoint();

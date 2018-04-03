@@ -53,29 +53,24 @@ class Point{
     if(mass>PointMassMa)mass=PointMassMa;
   }
   void update(){
+    if(fixed)return;
     //TODO: apply gravity
-    if(posy<height-floorHeight){
-      //accy+=gravity;
+    if(posy<height-floorHeight-2){
+      accy+=gravity;
+    }else{
+      //exit();
+      //accy*=-1;
+      vely*=-0.5;
+    }
+    if(posy>height-floorHeight){
+      vely=-abs(vely);
+      posy=height-floorHeight;
     }
     posx+=velx;
     posy+=vely;
     velx+=accx;
     vely+=accy;
-    accx*=0.5;
-    accy*=0.5;
-    if(posy>height-floorHeight){
-      //accy-=gravity;
-      //posy=height-floorHeight;
-      //float sgn=abs(vely)/vely;
-      //vely/=1.5;
-      //vely*=-0.9;
-      //if(abs(vely)<10)vely=0;
-      //vely
-      //vely=abs(vely);
-      //vely-=gravity*20;
-      //vely*=sgn;
-      //vely*=-1;
-      //vely=-abs(vely);
-    }
+    //accx*=0.01;
+    accy*=0.01;
   }
 }
